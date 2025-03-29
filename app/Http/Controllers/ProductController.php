@@ -32,7 +32,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $fields = $request->validate([
-            'name' => 'required'
+            'name' => 'required',
         ]);
 
         $product = Product::create($fields);
@@ -66,7 +66,7 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $fields = $request->validate([
-            'name' => 'required'
+            'name' => 'required',
         ]);
 
         $product = Product::find($product->id);
