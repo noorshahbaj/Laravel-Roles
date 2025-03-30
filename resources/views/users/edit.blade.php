@@ -38,6 +38,17 @@
                                 @enderror
                             </div>
 
+                            <div class="form-group mb-3">
+                                <label>Roles:</label>
+                                <select name="roles[]" class="form-select" multiple>
+                                    @foreach ($roles as $role)
+                                        <option value="{{ $role->name }}"
+                                            {{ $user->hasRole($role->name) ? 'selected' : '' }}>
+                                            {{ $role->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
                     </div>

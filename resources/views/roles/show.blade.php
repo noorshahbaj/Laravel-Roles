@@ -5,12 +5,11 @@
         <div class="row justify-content-center">
             <div class="col-md-10">
                 <div class="card">
-                    <div class="card-header">{{ __('Show User') }}</div>
+                    <div class="card-header">{{ __('Show Role') }}</div>
                     <div class="card-body">
-                        <a href="{{ route('users.index') }}" class="btn btn-info mb-3">Back</a>
+                        <a href="{{ route('roles.index') }}" class="btn btn-info mb-3">Back</a>
 
-                        <p><strong>Name: {{ $user->name }}</strong></p>
-                        <p><strong>Email: {{ $user->email }}</strong></p>
+                        <p><strong>Name: <span class="text-success">{{ $role->name }}</span></strong></p>
 
                         <h4>Permissions:</h4>
                         <table class="table table-striped table-bordered w-25">
@@ -20,9 +19,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($roles as $role)
+                                @foreach ($role->permissions as $permission)
                                     <tr>
-                                        <td>{{ $role }}</td>
+                                        <td>{{ $permission->name }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>

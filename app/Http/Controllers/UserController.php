@@ -4,9 +4,30 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
+    /**
+     * Define middleware for users controller.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        // List users
+        $this->middleware(['permission:user-list|user-create|user-edit|user-delete'], ['only' => ['index', 'show']]);
+
+        // Create user
+        $this->middleware(['permission:user-create'], ['only' => ['create', 'store']]);
+
+        // Edit user
+        $this->middleware(['permission:user-edit'], ['only' => ['edit', 'update']]);
+
+        // Delete user
+        $this->middleware(['permission:user-delete'], ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -24,8 +45,10 @@ class UserController extends Controller
      */
     public function create()
     {
+        $roles = Role::all();
+
         // Return the view to create a new user
-        return view('users.create');
+        return view('users.create', compact('roles'));
     }
 
     /**
@@ -41,6 +64,8 @@ class UserController extends Controller
 
         $user = User::create($fields);
 
+        $user->assignRole($request->roles);
+
         return redirect()->route('users.index')->with('success', 'User created successfully.');
     }
 
@@ -50,8 +75,9 @@ class UserController extends Controller
     public function show(string $id)
     {
         $user = User::find($id);
+        $roles = $user->getRoleNames();
 
-        return view('users.show', compact('user'));
+        return view('users.show', compact('user', 'roles'));
     }
 
     /**
@@ -61,7 +87,9 @@ class UserController extends Controller
     {
         $user = User::find($id);
 
-        return view('users.edit', compact('user'));
+        $roles = Role::all();
+
+        return view('users.edit', compact('user', 'roles'));
     }
 
     /**
@@ -69,14 +97,20 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $fields = $request->validate([
+        $request->validate([
             'name' => 'required',
             'email' => 'required|email',
-            'password' => 'required',
         ]);
 
         $user = User::find($id);
-        $user->update($fields);
+
+        if ($request->password === null) {
+            $request->merge(['password' => $user->password]);
+        }
+
+        $user->update($request->all());
+
+        $user->syncRoles($request->roles);
 
         return redirect()->route('users.index')->with('success', 'User updated successfully.');
     }

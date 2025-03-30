@@ -8,6 +8,26 @@ use Illuminate\Http\Request;
 class ProductController extends Controller
 {
     /**
+     * Define middleware for products controller.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        // List products
+        $this->middleware(['permission:product-list|product-create|product-edit|product-delete'], ['only' => ['index', 'show']]);
+
+        // Create product
+        $this->middleware(['permission:product-create'], ['only' => ['create', 'store']]);
+
+        // Edit product
+        $this->middleware(['permission:product-edit'], ['only' => ['edit', 'update']]);
+
+        // Delete product
+        $this->middleware(['permission:product-delete'], ['only' => ['destroy']]);
+    }
+
+    /**
      * Display a listing of the resource.
      */
     public function index()
@@ -22,7 +42,6 @@ class ProductController extends Controller
      */
     public function create()
     {
-        // Return the view to create a new user
         return view('products.create');
     }
 

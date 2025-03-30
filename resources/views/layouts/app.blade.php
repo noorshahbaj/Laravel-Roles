@@ -53,12 +53,24 @@
                                 </li>
                             @endif
                         @else
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('users.index') }}">{{ __('Manage Users') }}</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('products.index') }}">{{ __('Manage products') }}</a>
-                            </li>
+                            @can('role-list')
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('roles.index') }}">{{ __('Manage Roles') }}</a>
+                                </li>
+                            @endcan
+
+                            @can('user-list')
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('users.index') }}">{{ __('Manage Users') }}</a>
+                                </li>
+                            @endcan
+
+                            @can('product-list')
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('products.index') }}">{{ __('Manage products') }}</a>
+                                </li>
+                            @endcan
+
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

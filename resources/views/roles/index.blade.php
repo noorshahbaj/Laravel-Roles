@@ -5,14 +5,14 @@
         <div class="row justify-content-center">
             <div class="col-md-10">
                 <div class="card">
-                    <div class="card-header">{{ __('Users') }}</div>
+                    <div class="card-header">{{ __('Roles') }}</div>
                     <div class="card-body">
                         @session('success')
                             <div class="alert alert-success">{{ $value }}</div>
                         @endsession
 
-                        @can('user-create')
-                            <a href="{{ route('users.create') }}" class="btn btn-success mb-3">Add User</a>
+                        @can('role-create')
+                            <a href="{{ route('roles.create') }}" class="btn btn-success mb-3">Add Role</a>
                         @endcan
 
                         <table class="table table-striped table-bordered">
@@ -20,38 +20,30 @@
                                 <tr>
                                     <th scope="col" width="5%">ID</th>
                                     <th scope="col">Name</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Role</th>
                                     <th scope="col" width="20%">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($users as $user)
+                                @foreach ($roles as $role)
                                     <tr>
-                                        <th>{{ $user->id }}</th>
-                                        <td>{{ $user->name }}</td>
-                                        <td>{{ $user->email }}</td>
+                                        <th>{{ $role->id }}</th>
+                                        <td>{{ $role->name }}</td>
                                         <td>
-                                            @foreach ($user->getRoleNames() as $role)
-                                                <button class="btn btn-success btn-sm">{{ $role }}</button>
-                                            @endforeach
-                                        </td>
-                                        <td>
-                                            <form method="post" action="{{ route('users.destroy', $user->id) }}">
+                                            <form method="post" action="{{ route('roles.destroy', $role->id) }}">
                                                 @csrf
                                                 @method('DELETE')
 
-                                                @can('user-list')
-                                                    <a href="{{ route('users.show', $user->id) }}"
+                                                @can('role-list')
+                                                    <a href="{{ route('roles.show', $role->id) }}"
                                                         class="btn btn-info btn-sm">Show</a>
                                                 @endcan
 
-                                                @can('user-edit')
-                                                    <a href="{{ route('users.edit', $user->id) }}"
+                                                @can('role-edit')
+                                                    <a href="{{ route('roles.edit', $role->id) }}"
                                                         class="btn btn-primary btn-sm">Edit</a>
                                                 @endcan
 
-                                                @can('user-delete')
+                                                @can('role-delete')
                                                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                                 @endcan
                                             </form>
