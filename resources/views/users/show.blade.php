@@ -20,9 +20,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($roles as $role)
+                                @foreach ($permissions as $permission)
                                     <tr>
-                                        <td>{{ $role }}</td>
+                                        <td>{{ $permission->name }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>

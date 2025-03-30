@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules\Unique;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
@@ -75,9 +76,9 @@ class UserController extends Controller
     public function show(string $id)
     {
         $user = User::find($id);
-        $roles = $user->getRoleNames();
+        $permissions = $user->getPermissionsViaRoles()->unique('name');
 
-        return view('users.show', compact('user', 'roles'));
+        return view('users.show', compact('user', 'permissions'));
     }
 
     /**
